@@ -76,7 +76,7 @@ headOr ::
   -> List a
   -> a
 headOr a Nil = a
-headOr _ (x:._) = x
+headOr a xs = foldRight (\x _ -> x) a xs
 
 -- | The product of the elements of a list.
 --
@@ -91,7 +91,7 @@ headOr _ (x:._) = x
 product ::
   List Int
   -> Int
-product a = foldLeft (*) 1 a
+product = foldRight (*) 1 
 
 -- | Sum the elements of the list.
 --
@@ -105,7 +105,7 @@ product a = foldLeft (*) 1 a
 sum ::
   List Int
   -> Int
-sum a = foldLeft (+) 0 a
+sum = foldRight (+) 0 
 
 -- | Return the length of the list.
 --
