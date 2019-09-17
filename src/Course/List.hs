@@ -150,10 +150,7 @@ filter ::
   (a -> Bool)
   -> List a
   -> List a
-filter _ Nil = Nil
-filter p (x:.xs)
-  | p x = x :. filter p xs
-  | otherwise = filter p xs
+filter p = foldRight (\a as -> if p a then a :. as else as) Nil
 
 -- | Append two lists to a new list.
 --
@@ -172,7 +169,6 @@ filter p (x:.xs)
   -> List a
   -> List a
 (++) xs ys = foldRight (:.) ys xs
-
 
 infixr 5 ++
 
@@ -205,8 +201,8 @@ flatMap ::
   (a -> List b)
   -> List a
   -> List b
-flatMap =
-  error "todo: Course.List#flatMap"
+flatMap f xs = 
+  flatten (map f xs)
 
 -- | Flatten a list of lists to a list (again).
 -- HOWEVER, this time use the /flatMap/ function that you just wrote.
@@ -215,8 +211,8 @@ flatMap =
 flattenAgain ::
   List (List a)
   -> List a
-flattenAgain =
-  error "todo: Course.List#flattenAgain"
+flattenAgain xs =
+  flatMap (\a -> a) xs
 
 -- | Convert a list of optional values to an optional list of values.
 --
@@ -244,7 +240,7 @@ seqOptional ::
   List (Optional a)
   -> Optional (List a)
 seqOptional =
-  error "todo: Course.List#seqOptional"
+  foldRight (twiceOptional (:.)) (Full Nil)
 
 -- | Find the first element in the list matching the predicate.
 --
