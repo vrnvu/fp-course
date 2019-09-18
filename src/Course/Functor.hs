@@ -99,9 +99,9 @@ instance Functor ((->) t) where
   a
   -> k b
   -> k a
-(<$) a b =
+(<$) a fb =
 --  (\_ -> a) <$> b
-  const a <$> b
+  const a <$> fb
   
 -- | Anonymous map producing unit value.
 --
@@ -120,8 +120,8 @@ void ::
   Functor k =>
   k a
   -> k ()
-void =
-  error "todo: Course.Functor#void"
+void fa =
+  const () <$> fa
 
 -----------------------
 -- SUPPORT LIBRARIES --
