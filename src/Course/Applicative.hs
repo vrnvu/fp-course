@@ -48,13 +48,14 @@ instance Applicative ExactlyOne where
     a
     -> ExactlyOne a
   pure =
-    error "todo: Course.Applicative pure#instance ExactlyOne"
+    ExactlyOne
   (<*>) ::
     ExactlyOne (a -> b)
     -> ExactlyOne a
     -> ExactlyOne b
-  (<*>) =
-    error "todo: Course.Applicative (<*>)#instance ExactlyOne"
+  (<*>) af a = 
+    runExactlyOne af <$> a
+
 
 -- | Insert into a List.
 --
@@ -67,13 +68,16 @@ instance Applicative List where
     a
     -> List a
   pure =
-    error "todo: Course.Applicative pure#instance List"
+    foldRight (:.) Nil
   (<*>) ::
     List (a -> b)
     -> List a
     -> List b
-  (<*>) =
-    error "todo: Course.Apply (<*>)#instance List"
+  (<*>) af a =
+    (foldRight (.) pure af) <$> a
+
+-- [(+1) :. (*2)] <*> [1 :. 2 :. Nil]
+-- [2 :. 6 :. Nil]
 
 -- | Insert into an Optional.
 --
@@ -251,8 +255,8 @@ lift1 ::
   (a -> b)
   -> k a
   -> k b
-lift1 =
-  error "todo: Course.Applicative#lift1"
+lift1 k ka =
+  k <$> ka
 
 -- | Apply, discarding the value of the first argument.
 -- Pronounced, right apply.
